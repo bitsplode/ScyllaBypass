@@ -119,6 +119,7 @@ function system.window(name)
 			TabLayout.Parent = Tab
 			TabLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 			TabLayout.SortOrder = Enum.SortOrder.LayoutOrder
+			TabLayout.FillDirection = Enum.FillDirection.Horizontal
 
 			OptionTemplate.Name = "OptionTemplate"
 			OptionTemplate.Text = name
@@ -136,6 +137,7 @@ function system.window(name)
 						v.Visible = true
 					end
 				end
+				Tab.BackgroundColor3 = Color3.fromRGB(49, 49, 49)
 				Tab.Visible = true
 			end)
 
