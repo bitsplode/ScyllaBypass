@@ -94,6 +94,7 @@ function system.window(name)
 	OptionLayout.Parent = Options
 	OptionLayout.SortOrder = Enum.SortOrder.LayoutOrder
 	OptionLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+	OptionLayout.FillDirection = Enum.FillDirection.Horizontal
 
 	Containers.Name = "Containers"
 	Containers.Parent = Settings
@@ -119,7 +120,6 @@ function system.window(name)
 			TabLayout.Parent = Tab
 			TabLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 			TabLayout.SortOrder = Enum.SortOrder.LayoutOrder
-			TabLayout.FillDirection = Enum.FillDirection.Horizontal
 
 			OptionTemplate.Name = "OptionTemplate"
 			OptionTemplate.Text = name
@@ -384,7 +384,7 @@ function system.window(name)
 					KeybindTitle.Position = UDim2.new(0.0137457047, 0, 0.200000003, 0)
 					KeybindTitle.Size = UDim2.new(0, 270, 0, 30)
 					KeybindTitle.Font = Enum.Font.SourceSansBold
-					KeybindTitle.Text = default
+					KeybindTitle.Text = name
 					KeybindTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
 					KeybindTitle.TextSize = 30.000
 					KeybindTitle.TextWrapped = true
