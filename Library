@@ -402,7 +402,7 @@ function system.window(name)
 					end)
 
 					UIS.InputBegan:Connect(function(key, gpe)
-						if key ~= "NONE" then
+						if default ~= "NONE" then
 							if key == inputType[default] or key == default then
 								callback()
 							end
