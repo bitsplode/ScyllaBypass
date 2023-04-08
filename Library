@@ -112,6 +112,8 @@ function system.window(name)
 			Tab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 			Tab.BackgroundTransparency = 1.000
 			Tab.Size = UDim2.new(1, 0, 1, 0)
+			
+			if #Containers:GetChildren() == 1 then Tab.Visible = true else Tab.Visible = false end
 
 			TabLayout.Name = "TabLayout"
 			TabLayout.Parent = Tab
@@ -128,6 +130,14 @@ function system.window(name)
 			OptionTemplate.Font = Enum.Font.SourceSansBold
 			OptionTemplate.TextColor3 = Color3.fromRGB(255, 255, 255)
 			OptionTemplate.TextSize = 14.000
+			OptionTemplate.MouseButton1Click:Connect(function()
+				for i, v in pairs(Containers:GetChildren()) do
+					if v:IsA("Frame") then
+						v.Visible = true
+					end
+				end
+				Tab.Visible = true
+			end)
 
 			return {
 				toggle = function(name, default, dictionary, callback)
@@ -203,19 +213,29 @@ function system.window(name)
 					ToggleStatus.TextColor3 = Color3.fromRGB(255, 255, 255)
 					ToggleStatus.TextSize = 20.000
 					ToggleStatus.TextWrapped = true
-
-					local currentIndex = 1
-
+										
+					local packetAmount = 1;
 					ToggleLeft.MouseButton1Click:Connect(function()
-						local nextIndex = next(dictionary, currentIndex)
-						ToggleStatus.Text = nextIndex
-						callback(nextIndex)
+						packetAmount = packetAmount - 1
+						if dictionary[packetAmount] then
+							ToggleStatus.Text = dictionary[packetAmount]
+							callback(dictionary[packetAmount])
+						else
+							packetAmount = #dictionary
+							ToggleStatus.Text = dictionary[packetAmount]
+							callback(dictionary[packetAmount])
+						end
 					end)
 
 					ToggleRight.MouseButton1Click:Connect(function()
-						local nextIndex = next(dictionary, currentIndex)
-						ToggleStatus.Text = nextIndex
-						callback(nextIndex)
+						packetAmount = packetAmount + 1
+						if dictionary[packetAmount] then
+							ToggleStatus.Text = dictionary[packetAmount]
+						else
+							packetAmount = 1
+							ToggleStatus.Text = dictionary[packetAmount]
+							callback(dictionary[packetAmount])
+						end
 					end)
 				end,
 				slider = function(name, default, range, callback)
@@ -226,7 +246,10 @@ function system.window(name)
 					local SliderRight = Instance.new("TextButton")
 					local SliderStatus = Instance.new("TextLabel")
 					local SliderDragable = Instance.new("TextButton")
-
+					
+					local actualValue = default;
+					local dragging = false;
+					
 					SliderTemplate.Name = "SliderTemplate"
 					SliderTemplate.Parent = Tab
 					SliderTemplate.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -305,6 +328,31 @@ function system.window(name)
 					SliderDragable.Text = ""
 					SliderDragable.TextColor3 = Color3.fromRGB(0, 0, 0)
 					SliderDragable.TextSize = 14.000
+					
+					SliderDragable.MouseButton1Down:Connect(function()
+						dragging = true
+					end)
+
+					UIS.InputEnded:Connect(function(input)
+						if input.UserInputType == Enum.UserInputType.MouseButton1 then
+							dragging = false
+						end
+					end)
+
+					UIS.InputChanged:Connect(function(input)
+						if input.UserInputType == Enum.UserInputType.MouseMovement then
+							if dragging == true then
+								local loc = UIS:GetMouseLocation()
+								local relPos = loc-SliderStatus.AbsolutePosition
+								local percentage = math.clamp(relPos.X/SliderStatus.AbsoluteSize.X,0,1)
+								SliderDragable.Position = UDim2.new(percentage, 0, -1, 0)
+								if callback then
+									callback(percentage*range[2])
+								end
+								--Status_2.Text = roundNumber(percentage*max, 1)
+							end
+						end
+					end)
 				end,
 				keybind = function(name, default, inputType, callback)
 					local KeybindTemplate = Instance.new("Frame")
@@ -314,7 +362,10 @@ function system.window(name)
 					local KeybindUnset = Instance.new("TextButton")
 					local KeybindStatus = Instance.new("TextLabel")
 					local MainContainer = Instance.new("Frame")
-
+					
+					local pickUp = false;
+					local savedBind = nil;
+					
 					KeybindTemplate.Name = "KeybindTemplate"
 					KeybindTemplate.Parent = Tab
 					KeybindTemplate.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -387,26 +438,27 @@ function system.window(name)
 						KeybindStatus.Text = "NONE"
 					end)
 
-					local used = false
 					KeybindSet.MouseButton1Click:Connect(function()
-						if used == false then
-							used = true
-							local newUISDetection;
-							newUISDetection = UIS.InputBegan:Connect(function(key, gpe)
-								if not gpe and key then
-									default = key
-									newUISDetection:Disconnect()
-								end
-							end)
+						pickUp = true
+					end)
+
+					game:GetService("UserInputService").InputBegan:Connect(function(key, gpe)
+						if pickUp == true then
+							savedBind = key.KeyCode
+							if savedBind then
+								KeybindStatus.Text = savedBind.Name
+							end
+							if callback then
+								callback(savedBind)
+							end
+							pickUp = false
 						end
 					end)
 
-					UIS.InputBegan:Connect(function(key, gpe)
-						if default ~= "NONE" then
-							if key == inputType[default] or key == default then
-								callback()
-							end
-						end
+					KeybindUnset.MouseButton1Click:Connect(function()
+						KeybindStatus.Text = "NONE"
+						savedBind = nil;
+						pickUp = false
 					end)
 				end,
 			}
