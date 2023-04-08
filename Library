@@ -46,9 +46,10 @@ function system.window(name)
 	getgenv()[fingerprint].UI = BypassScylla
 
 	local navigating = false;
-
-	BypassScylla.Name = "BypassScylla"
-	BypassScylla.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+	
+	syn.protect_gui(BypassScylla)
+	BypassScylla.Name = syn.crypt.hash("BypassScyllaMenu")
+	BypassScylla.Parent = game.CoreGui
 
 	Main.Name = "Main"
 	Main.Parent = BypassScylla
@@ -106,7 +107,6 @@ function system.window(name)
 			end
 
 			-- Left and Right
-			print("Yea", key.KeyCode)
 			while UIS:IsKeyDown(Enum.KeyCode.A) do
 				wait()
 				Main.Position = UDim2.new(Main.Position.X.Scale - .025, Main.Position.X.Offset, Main.Position.Y.Scale, Main.Position.Y.Offset)
