@@ -1,6 +1,34 @@
+local hashing = loadstring(game:HttpGet("https://raw.githubusercontent.com/bitsplode/Valkyrie/main/HashLib"))()
+local UIS = game:GetService("UserInputService")
+local httpService = game:GetService("HttpService")
 local system = {}
 
-function system.window()
+function getNextValue(tbl, currentIndex)
+	if currentIndex >= #tbl then
+		return tbl[1]
+	else
+		return tbl[currentIndex + 1]
+	end
+end
+
+function system.window(name)
+	if getgenv().ScyllaBypass == true then
+		return {
+			error = function(message)
+				game.Players.LocalPlayer:Kick("Error: "..message)
+			end,
+		}
+	end
+
+	local fingerprint = hashing.sha256(httpService:GenerateGUID(false)..":"..name)
+	getgenv().ScyllaBypass = true
+	getgenv()[fingerprint] = {
+		CreationDate = tick(),
+		Data = {
+
+		},
+	}
+
 	local BypassScylla = Instance.new("ScreenGui")
 	local Main = Instance.new("Frame")
 	local Title = Instance.new("TextLabel")
@@ -9,7 +37,7 @@ function system.window()
 	local Options = Instance.new("Frame")
 	local OptionLayout = Instance.new("UIListLayout")
 	local Containers = Instance.new("Frame")
-	
+
 	BypassScylla.Name = "BypassScylla"
 	BypassScylla.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
@@ -28,7 +56,7 @@ function system.window()
 	Title.BorderSizePixel = 2
 	Title.Size = UDim2.new(1, 0, -0.0263157897, 50)
 	Title.Font = Enum.Font.FredokaOne
-	Title.Text = "Title"
+	Title.Text = name
 	Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 	Title.TextScaled = true
 	Title.TextSize = 14.000
@@ -89,7 +117,7 @@ function system.window()
 			TabLayout.Parent = Tab
 			TabLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 			TabLayout.SortOrder = Enum.SortOrder.LayoutOrder
-			
+
 			OptionTemplate.Name = "OptionTemplate"
 			OptionTemplate.Text = name
 			OptionTemplate.Parent = Options
@@ -100,16 +128,16 @@ function system.window()
 			OptionTemplate.Font = Enum.Font.SourceSansBold
 			OptionTemplate.TextColor3 = Color3.fromRGB(255, 255, 255)
 			OptionTemplate.TextSize = 14.000
-			
+
 			return {
-				toggle = function(name, default, dictionary)
+				toggle = function(name, default, dictionary, callback)
 					local ToggleTemplate = Instance.new("Frame")
 					local ToggleTitle = Instance.new("TextLabel")
 					local ToggleFrame = Instance.new("Frame")
 					local ToggleLeft = Instance.new("TextButton")
 					local ToggleRight = Instance.new("TextButton")
 					local ToggleStatus = Instance.new("TextLabel")
-					
+
 					ToggleTemplate.Name = "ToggleTemplate"
 					ToggleTemplate.Parent = Tab
 					ToggleTemplate.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -175,8 +203,22 @@ function system.window()
 					ToggleStatus.TextColor3 = Color3.fromRGB(255, 255, 255)
 					ToggleStatus.TextSize = 20.000
 					ToggleStatus.TextWrapped = true
+
+					local currentIndex = 1
+
+					ToggleLeft.MouseButton1Click:Connect(function()
+						local nextIndex = next(dictionary, currentIndex)
+						ToggleStatus.Text = nextIndex
+						callback(nextIndex)
+					end)
+
+					ToggleRight.MouseButton1Click:Connect(function()
+						local nextIndex = next(dictionary, currentIndex)
+						ToggleStatus.Text = nextIndex
+						callback(nextIndex)
+					end)
 				end,
-				slider = function(name, default, range)
+				slider = function(name, default, range, callback)
 					local SliderTemplate = Instance.new("Frame")
 					local SliderTitle = Instance.new("TextLabel")
 					local SliderFrame = Instance.new("Frame")
@@ -184,7 +226,7 @@ function system.window()
 					local SliderRight = Instance.new("TextButton")
 					local SliderStatus = Instance.new("TextLabel")
 					local SliderDragable = Instance.new("TextButton")
-					
+
 					SliderTemplate.Name = "SliderTemplate"
 					SliderTemplate.Parent = Tab
 					SliderTemplate.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -264,7 +306,7 @@ function system.window()
 					SliderDragable.TextColor3 = Color3.fromRGB(0, 0, 0)
 					SliderDragable.TextSize = 14.000
 				end,
-				keybind = function(name, default, inputType)
+				keybind = function(name, default, inputType, callback)
 					local KeybindTemplate = Instance.new("Frame")
 					local KeybindTitle = Instance.new("TextLabel")
 					local KeybindFrame = Instance.new("Frame")
@@ -289,7 +331,7 @@ function system.window()
 					KeybindTitle.Position = UDim2.new(0.0137457047, 0, 0.200000003, 0)
 					KeybindTitle.Size = UDim2.new(0, 270, 0, 30)
 					KeybindTitle.Font = Enum.Font.SourceSansBold
-					KeybindTitle.Text = "Keybind"
+					KeybindTitle.Text = default
 					KeybindTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
 					KeybindTitle.TextSize = 30.000
 					KeybindTitle.TextWrapped = true
@@ -336,9 +378,36 @@ function system.window()
 					KeybindStatus.Position = UDim2.new(0.310344815, 0, 0.125, 0)
 					KeybindStatus.Size = UDim2.new(0, 109, 0, 30)
 					KeybindStatus.Font = Enum.Font.SourceSansBold
+					KeybindStatus.Text = default
 					KeybindStatus.TextColor3 = Color3.fromRGB(255, 255, 255)
 					KeybindStatus.TextSize = 20.000
 					KeybindStatus.TextWrapped = true
+
+					KeybindUnset.MouseButton1Click:Connect(function()
+						KeybindStatus.Text = "NONE"
+					end)
+
+					local used = false
+					KeybindSet.MouseButton1Click:Connect(function()
+						if used == false then
+							used = true
+							local newUISDetection;
+							newUISDetection = UIS.InputBegan:Connect(function(key, gpe)
+								if not gpe and key then
+									default = key
+									newUISDetection:Disconnect()
+								end
+							end)
+						end
+					end)
+
+					UIS.InputBegan:Connect(function(key, gpe)
+						if key ~= "NONE" then
+							if key == inputType[default] or key == default then
+								callback()
+							end
+						end
+					end)
 				end,
 			}
 		end,
