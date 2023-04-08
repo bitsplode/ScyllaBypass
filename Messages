@@ -107,13 +107,20 @@ function MessageBoxT.Show(option)
 	end
 
 	local MessageBox = game:GetObjects("rbxassetid://"..ID)[1]
-	MessageBox.ZIndex = 10000
 	MessageBox["UIScale"].Scale = 1
 	MessageBox:Clone()
 	MessageBox.Parent = GUI
 	MessageBox.Position = CustomPos
 	MessageBox.Position = UDim2.new(0, MessageBox.AbsolutePosition.X, 0, MessageBox.AbsolutePosition.Y)
-
+	
+	MessageBox.ZIndex = 10000
+	MessageBox["Message-Header"].ZIndex = 10000
+	MessageBox["Message-Header"]["Box-Title"].ZIndex = 10000
+	MessageBox["MessageDescription"].ZIndex = 10000
+	MessageBox["Message-Icons"]["Error"].ZIndex = 10000
+	MessageBox["Message-Icons"]["Warning"].ZIndex = 10000
+	MessageBox["Message-Icons"]["Question"].ZIndex = 10000
+	
 	--// Applying Options
 	MessageBox["Message-Header"]["Box-Title"].Text = MessageTitle
 	MessageBox["MessageDescription"].Text = MessageDescription
@@ -130,6 +137,7 @@ function MessageBoxT.Show(option)
 
 	if Options ~= "None" then
 		Buttons = MessageBox["MessageBoxButtons"][Options]:Clone()
+		Buttons.ZIndex = 10000
 		Buttons.Visible = true
 		Buttons.Parent = MessageBox
 		Addup = 36
