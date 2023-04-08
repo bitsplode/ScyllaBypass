@@ -20,7 +20,7 @@ function system.window(name)
 		}
 	end
 
-	local fingerprint = hashing.sha256(httpService:GenerateGUID(false)..":"..name)
+	local fingerprint = hashing.sha256(httpService:GenerateGUID(false))
 	getgenv().ScyllaBypass = true
 	getgenv()[fingerprint] = {
 		CreationDate = tick(),
