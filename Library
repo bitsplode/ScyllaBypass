@@ -1,0 +1,348 @@
+local system = {}
+
+function system.window()
+	local BypassScylla = Instance.new("ScreenGui")
+	local Main = Instance.new("Frame")
+	local Title = Instance.new("TextLabel")
+	local Navigate = Instance.new("TextButton")
+	local Settings = Instance.new("Frame")
+	local Options = Instance.new("Frame")
+	local OptionLayout = Instance.new("UIListLayout")
+	local Containers = Instance.new("Frame")
+	
+	BypassScylla.Name = "BypassScylla"
+	BypassScylla.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+	Main.Name = "Main"
+	Main.Parent = BypassScylla
+	Main.BackgroundColor3 = Color3.fromRGB(64, 64, 64)
+	Main.BorderColor3 = Color3.fromRGB(40, 40, 40)
+	Main.BorderSizePixel = 2
+	Main.Position = UDim2.new(0.0540880561, 0, 0.0803884268, 0)
+	Main.Size = UDim2.new(0, 582, 0, 646)
+
+	Title.Name = "Title"
+	Title.Parent = Main
+	Title.BackgroundColor3 = Color3.fromRGB(64, 64, 64)
+	Title.BorderColor3 = Color3.fromRGB(40, 40, 40)
+	Title.BorderSizePixel = 2
+	Title.Size = UDim2.new(1, 0, -0.0263157897, 50)
+	Title.Font = Enum.Font.FredokaOne
+	Title.Text = "Title"
+	Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+	Title.TextScaled = true
+	Title.TextSize = 14.000
+	Title.TextStrokeTransparency = 0.700
+	Title.TextWrapped = true
+
+	Navigate.Name = "Navigate"
+	Navigate.Parent = Title
+	Navigate.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+	Navigate.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	Navigate.Position = UDim2.new(0.83161515, 0, 0.185606062, 0)
+	Navigate.Size = UDim2.new(0, 90, 0, 20)
+	Navigate.Font = Enum.Font.SourceSans
+	Navigate.Text = "NAVIGATE"
+	Navigate.TextColor3 = Color3.fromRGB(255, 255, 255)
+	Navigate.TextScaled = true
+	Navigate.TextSize = 14.000
+	Navigate.TextWrapped = true
+
+	Settings.Name = "Settings"
+	Settings.Parent = Main
+	Settings.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Settings.BackgroundTransparency = 1.000
+	Settings.Position = UDim2.new(0, 0, 0.0510835908, 0)
+	Settings.Size = UDim2.new(0, 582, 0, 613)
+
+	Options.Name = "Options"
+	Options.Parent = Settings
+	Options.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Options.BackgroundTransparency = 1.000
+	Options.BorderSizePixel = 0
+	Options.Size = UDim2.new(0, 582, 0, 30)
+
+	OptionLayout.Name = "OptionLayout"
+	OptionLayout.Parent = Options
+	OptionLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	OptionLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+
+	Containers.Name = "Containers"
+	Containers.Parent = Settings
+	Containers.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Containers.BackgroundTransparency = 1.000
+	Containers.Position = UDim2.new(0, 0, 0.0464926586, 0)
+	Containers.Size = UDim2.new(0, 582, 0, 584)
+	return {
+		tab = function(name)
+			local Tab = Instance.new("Frame")
+			local TabLayout = Instance.new("UIListLayout")
+			local OptionTemplate = Instance.new("TextButton")
+
+			Tab.Name = "Tab"
+			Tab.Parent = Containers
+			Tab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Tab.BackgroundTransparency = 1.000
+			Tab.Size = UDim2.new(1, 0, 1, 0)
+
+			TabLayout.Name = "TabLayout"
+			TabLayout.Parent = Tab
+			TabLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+			TabLayout.SortOrder = Enum.SortOrder.LayoutOrder
+			
+			OptionTemplate.Name = "OptionTemplate"
+			OptionTemplate.Text = name
+			OptionTemplate.Parent = Options
+			OptionTemplate.BackgroundColor3 = Color3.fromRGB(64, 64, 64)
+			OptionTemplate.BorderColor3 = Color3.fromRGB(40, 40, 40)
+			OptionTemplate.BorderSizePixel = 2
+			OptionTemplate.Size = UDim2.new(0, 116, 0, 27)
+			OptionTemplate.Font = Enum.Font.SourceSansBold
+			OptionTemplate.TextColor3 = Color3.fromRGB(255, 255, 255)
+			OptionTemplate.TextSize = 14.000
+			
+			return {
+				toggle = function(name, default, dictionary)
+					local ToggleTemplate = Instance.new("Frame")
+					local ToggleTitle = Instance.new("TextLabel")
+					local ToggleFrame = Instance.new("Frame")
+					local ToggleLeft = Instance.new("TextButton")
+					local ToggleRight = Instance.new("TextButton")
+					local ToggleStatus = Instance.new("TextLabel")
+					
+					ToggleTemplate.Name = "ToggleTemplate"
+					ToggleTemplate.Parent = Tab
+					ToggleTemplate.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					ToggleTemplate.BackgroundTransparency = 1.000
+					ToggleTemplate.BorderSizePixel = 0
+					ToggleTemplate.Position = UDim2.new(0, 0, 0.0995106027, 0)
+					ToggleTemplate.Size = UDim2.new(0, 582, 0, 50)
+
+					ToggleTitle.Name = "ToggleTitle"
+					ToggleTitle.Parent = ToggleTemplate
+					ToggleTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					ToggleTitle.BackgroundTransparency = 1.000
+					ToggleTitle.Position = UDim2.new(0.0137457047, 0, 0.200000003, 0)
+					ToggleTitle.Size = UDim2.new(0, 270, 0, 30)
+					ToggleTitle.Font = Enum.Font.SourceSansBold
+					ToggleTitle.Text = name
+					ToggleTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+					ToggleTitle.TextSize = 30.000
+					ToggleTitle.TextWrapped = true
+					ToggleTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+					ToggleFrame.Name = "ToggleFrame"
+					ToggleFrame.Parent = ToggleTemplate
+					ToggleFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					ToggleFrame.BackgroundTransparency = 1.000
+					ToggleFrame.Position = UDim2.new(0.489690721, 0, 0.100000001, 0)
+					ToggleFrame.Size = UDim2.new(0, 290, 0, 40)
+
+					ToggleLeft.Name = "ToggleLeft"
+					ToggleLeft.Parent = ToggleFrame
+					ToggleLeft.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+					ToggleLeft.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					ToggleLeft.Position = UDim2.new(0, 0, 0.125, 0)
+					ToggleLeft.Size = UDim2.new(0, 45, 0, 30)
+					ToggleLeft.Font = Enum.Font.SourceSans
+					ToggleLeft.Text = "<"
+					ToggleLeft.TextColor3 = Color3.fromRGB(255, 255, 255)
+					ToggleLeft.TextScaled = true
+					ToggleLeft.TextSize = 14.000
+					ToggleLeft.TextWrapped = true
+
+					ToggleRight.Name = "ToggleRight"
+					ToggleRight.Parent = ToggleFrame
+					ToggleRight.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+					ToggleRight.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					ToggleRight.Position = UDim2.new(0.844655991, 0, 0.125, 0)
+					ToggleRight.Size = UDim2.new(0, 45, 0, 30)
+					ToggleRight.Font = Enum.Font.SourceSans
+					ToggleRight.Text = ">"
+					ToggleRight.TextColor3 = Color3.fromRGB(255, 255, 255)
+					ToggleRight.TextScaled = true
+					ToggleRight.TextSize = 14.000
+					ToggleRight.TextWrapped = true
+
+					ToggleStatus.Name = "ToggleStatus"
+					ToggleStatus.Parent = ToggleFrame
+					ToggleStatus.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					ToggleStatus.BackgroundTransparency = 1.000
+					ToggleStatus.Position = UDim2.new(0.212232709, 0, 0.125, 0)
+					ToggleStatus.Size = UDim2.new(0, 166, 0, 30)
+					ToggleStatus.Font = Enum.Font.SourceSansBold
+					ToggleStatus.Text = default
+					ToggleStatus.TextColor3 = Color3.fromRGB(255, 255, 255)
+					ToggleStatus.TextSize = 20.000
+					ToggleStatus.TextWrapped = true
+				end,
+				slider = function(name, default, range)
+					local SliderTemplate = Instance.new("Frame")
+					local SliderTitle = Instance.new("TextLabel")
+					local SliderFrame = Instance.new("Frame")
+					local SliderLeft = Instance.new("TextButton")
+					local SliderRight = Instance.new("TextButton")
+					local SliderStatus = Instance.new("TextLabel")
+					local SliderDragable = Instance.new("TextButton")
+					
+					SliderTemplate.Name = "SliderTemplate"
+					SliderTemplate.Parent = Tab
+					SliderTemplate.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					SliderTemplate.BackgroundTransparency = 1.000
+					SliderTemplate.BorderColor3 = Color3.fromRGB(27, 42, 53)
+					SliderTemplate.BorderSizePixel = 0
+					SliderTemplate.Position = UDim2.new(0, 0, 0.0995106027, 0)
+					SliderTemplate.Size = UDim2.new(0, 582, 0, 50)
+
+					SliderTitle.Name = "SliderTitle"
+					SliderTitle.Parent = SliderTemplate
+					SliderTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					SliderTitle.BackgroundTransparency = 1.000
+					SliderTitle.Position = UDim2.new(0.0137457047, 0, 0.200000003, 0)
+					SliderTitle.Size = UDim2.new(0, 270, 0, 30)
+					SliderTitle.Font = Enum.Font.SourceSansBold
+					SliderTitle.Text = name
+					SliderTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+					SliderTitle.TextSize = 30.000
+					SliderTitle.TextWrapped = true
+					SliderTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+					SliderFrame.Name = "SliderFrame"
+					SliderFrame.Parent = SliderTemplate
+					SliderFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					SliderFrame.BackgroundTransparency = 1.000
+					SliderFrame.BorderColor3 = Color3.fromRGB(27, 42, 53)
+					SliderFrame.Position = UDim2.new(0.489690721, 0, 0.100000001, 0)
+					SliderFrame.Size = UDim2.new(0, 290, 0, 40)
+
+					SliderLeft.Name = "SliderLeft"
+					SliderLeft.Parent = SliderFrame
+					SliderLeft.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+					SliderLeft.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					SliderLeft.Position = UDim2.new(0, 0, 0.125, 0)
+					SliderLeft.Size = UDim2.new(0, 45, 0, 30)
+					SliderLeft.Font = Enum.Font.SourceSans
+					SliderLeft.Text = "<"
+					SliderLeft.TextColor3 = Color3.fromRGB(255, 255, 255)
+					SliderLeft.TextScaled = true
+					SliderLeft.TextSize = 14.000
+					SliderLeft.TextWrapped = true
+
+					SliderRight.Name = "SliderRight"
+					SliderRight.Parent = SliderFrame
+					SliderRight.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+					SliderRight.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					SliderRight.Position = UDim2.new(0.844655991, 0, 0.125, 0)
+					SliderRight.Size = UDim2.new(0, 45, 0, 30)
+					SliderRight.Font = Enum.Font.SourceSans
+					SliderRight.Text = ">"
+					SliderRight.TextColor3 = Color3.fromRGB(255, 255, 255)
+					SliderRight.TextScaled = true
+					SliderRight.TextSize = 14.000
+					SliderRight.TextWrapped = true
+
+					SliderStatus.Name = "SliderStatus"
+					SliderStatus.Parent = SliderFrame
+					SliderStatus.BackgroundColor3 = Color3.fromRGB(85, 85, 85)
+					SliderStatus.BorderColor3 = Color3.fromRGB(40, 40, 40)
+					SliderStatus.Position = UDim2.new(0.212232709, 0, 0.425000012, 0)
+					SliderStatus.Size = UDim2.new(0, 166, 0, 6)
+					SliderStatus.Font = Enum.Font.SourceSansBold
+					SliderStatus.Text = ""
+					SliderStatus.TextColor3 = Color3.fromRGB(255, 255, 255)
+					SliderStatus.TextSize = 20.000
+					SliderStatus.TextWrapped = true
+
+					SliderDragable.Name = "SliderDragable"
+					SliderDragable.Parent = SliderStatus
+					SliderDragable.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+					SliderDragable.BorderSizePixel = 0
+					SliderDragable.Position = UDim2.new(0.415662646, 0, -0.833333313, 0)
+					SliderDragable.Size = UDim2.new(0, 7, 0, 15)
+					SliderDragable.Font = Enum.Font.SourceSans
+					SliderDragable.Text = ""
+					SliderDragable.TextColor3 = Color3.fromRGB(0, 0, 0)
+					SliderDragable.TextSize = 14.000
+				end,
+				keybind = function(name, default, inputType)
+					local KeybindTemplate = Instance.new("Frame")
+					local KeybindTitle = Instance.new("TextLabel")
+					local KeybindFrame = Instance.new("Frame")
+					local KeybindSet = Instance.new("TextButton")
+					local KeybindUnset = Instance.new("TextButton")
+					local KeybindStatus = Instance.new("TextLabel")
+					local MainContainer = Instance.new("Frame")
+
+					KeybindTemplate.Name = "KeybindTemplate"
+					KeybindTemplate.Parent = Tab
+					KeybindTemplate.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					KeybindTemplate.BackgroundTransparency = 1.000
+					KeybindTemplate.BorderColor3 = Color3.fromRGB(27, 42, 53)
+					KeybindTemplate.BorderSizePixel = 0
+					KeybindTemplate.Position = UDim2.new(0, 0, 0.0995106027, 0)
+					KeybindTemplate.Size = UDim2.new(0, 582, 0, 50)
+
+					KeybindTitle.Name = "KeybindTitle"
+					KeybindTitle.Parent = KeybindTemplate
+					KeybindTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					KeybindTitle.BackgroundTransparency = 1.000
+					KeybindTitle.Position = UDim2.new(0.0137457047, 0, 0.200000003, 0)
+					KeybindTitle.Size = UDim2.new(0, 270, 0, 30)
+					KeybindTitle.Font = Enum.Font.SourceSansBold
+					KeybindTitle.Text = "Keybind"
+					KeybindTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+					KeybindTitle.TextSize = 30.000
+					KeybindTitle.TextWrapped = true
+					KeybindTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+					KeybindFrame.Name = "KeybindFrame"
+					KeybindFrame.Parent = KeybindTemplate
+					KeybindFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					KeybindFrame.BackgroundTransparency = 1.000
+					KeybindFrame.BorderColor3 = Color3.fromRGB(27, 42, 53)
+					KeybindFrame.Position = UDim2.new(0.489690721, 0, 0.100000001, 0)
+					KeybindFrame.Size = UDim2.new(0, 290, 0, 40)
+
+					KeybindSet.Name = "KeybindSet"
+					KeybindSet.Parent = KeybindFrame
+					KeybindSet.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+					KeybindSet.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					KeybindSet.Position = UDim2.new(0, 0, 0.125, 0)
+					KeybindSet.Size = UDim2.new(0, 90, 0, 30)
+					KeybindSet.Font = Enum.Font.SourceSans
+					KeybindSet.Text = "SET"
+					KeybindSet.TextColor3 = Color3.fromRGB(255, 255, 255)
+					KeybindSet.TextScaled = true
+					KeybindSet.TextSize = 14.000
+					KeybindSet.TextWrapped = true
+
+					KeybindUnset.Name = "KeybindUnset"
+					KeybindUnset.Parent = KeybindFrame
+					KeybindUnset.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+					KeybindUnset.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					KeybindUnset.Position = UDim2.new(0.689483643, 0, 0.125, 0)
+					KeybindUnset.Size = UDim2.new(0, 90, 0, 30)
+					KeybindUnset.Font = Enum.Font.SourceSans
+					KeybindUnset.Text = "UNSET"
+					KeybindUnset.TextColor3 = Color3.fromRGB(255, 255, 255)
+					KeybindUnset.TextScaled = true
+					KeybindUnset.TextSize = 14.000
+					KeybindUnset.TextWrapped = true
+
+					KeybindStatus.Name = "KeybindStatus"
+					KeybindStatus.Parent = KeybindFrame
+					KeybindStatus.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					KeybindStatus.BackgroundTransparency = 1.000
+					KeybindStatus.Position = UDim2.new(0.310344815, 0, 0.125, 0)
+					KeybindStatus.Size = UDim2.new(0, 109, 0, 30)
+					KeybindStatus.Font = Enum.Font.SourceSansBold
+					KeybindStatus.TextColor3 = Color3.fromRGB(255, 255, 255)
+					KeybindStatus.TextSize = 20.000
+					KeybindStatus.TextWrapped = true
+				end,
+			}
+		end,
+	}
+end
+
+return system
