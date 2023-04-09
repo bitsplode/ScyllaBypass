@@ -16,6 +16,8 @@ function getNextValue(tbl, currentIndex)
 end
 
 function system.window(name)
+	player:GetMouse().Icon = "rbxassetid://6776562421"
+	
 	for i, v in pairs(getgenv()) do
 		if typeof(v) == "table" then
 			if v.Data and v.UI then
@@ -99,22 +101,28 @@ function system.window(name)
 			-- Up and Down
 			while UIS:IsKeyDown(Enum.KeyCode.W) do
 				wait()
-				Main.Position = UDim2.new(Main.Position.X.Scale, Main.Position.X.Offset, Main.Position.Y.Scale - .025, Main.Position.Y.Offset)
+				Main.Position = UDim2.new(Main.Position.X.Scale, Main.Position.X.Offset, Main.Position.Y.Scale - .01, Main.Position.Y.Offset)
 			end
 			while UIS:IsKeyDown(Enum.KeyCode.S) do
 				wait()
-				Main.Position = UDim2.new(Main.Position.X.Scale, Main.Position.X.Offset, Main.Position.Y.Scale + .025, Main.Position.Y.Offset)
+				Main.Position = UDim2.new(Main.Position.X.Scale, Main.Position.X.Offset, Main.Position.Y.Scale + .01, Main.Position.Y.Offset)
 			end
 
 			-- Left and Right
 			while UIS:IsKeyDown(Enum.KeyCode.A) do
 				wait()
-				Main.Position = UDim2.new(Main.Position.X.Scale - .025, Main.Position.X.Offset, Main.Position.Y.Scale, Main.Position.Y.Offset)
+				Main.Position = UDim2.new(Main.Position.X.Scale - .01, Main.Position.X.Offset, Main.Position.Y.Scale, Main.Position.Y.Offset)
 			end
 			while UIS:IsKeyDown(Enum.KeyCode.D) do
 				wait()
-				Main.Position = UDim2.new(Main.Position.X.Scale + .025, Main.Position.X.Offset, Main.Position.Y.Scale, Main.Position.Y.Offset)
+				Main.Position = UDim2.new(Main.Position.X.Scale + .01, Main.Position.X.Offset, Main.Position.Y.Scale, Main.Position.Y.Offset)
 			end
+		end
+		
+		if not gpe and key.KeyCode == Enum.KeyCode.End then
+			BypassScylla.Enabled = not BypassScylla.Enabled
+			navigating = false
+			controls:Enable()
 		end
 	end)
 
@@ -150,7 +158,7 @@ function system.window(name)
 			local TabLayout = Instance.new("UIListLayout")
 			local OptionTemplate = Instance.new("TextButton")
 
-			Tab.Name = "Tab"
+			Tab.Name = name
 			Tab.Parent = Containers
 			Tab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 			Tab.BackgroundTransparency = 1.000
@@ -171,12 +179,18 @@ function system.window(name)
 			OptionTemplate.BorderSizePixel = 2
 			OptionTemplate.Size = UDim2.new(0, 116, 0, 27)
 			OptionTemplate.Font = Enum.Font.SourceSansBold
+			OptionTemplate.AutoButtonColor = false
 			OptionTemplate.TextColor3 = Color3.fromRGB(255, 255, 255)
 			OptionTemplate.TextSize = 14.000
 			OptionTemplate.MouseButton1Click:Connect(function()
 				for i, v in pairs(Containers:GetChildren()) do
 					if v:IsA("Frame") then
-						v.Visible = true
+						v.Visible = false
+					end
+				end
+				for i, v in pairs(Options:GetChildren()) do
+					if v:IsA("TextButton") then
+						v.BackgroundColor3 = Color3.fromRGB(64, 64, 64)
 					end
 				end
 				OptionTemplate.BackgroundColor3 = Color3.fromRGB(49, 49, 49)
