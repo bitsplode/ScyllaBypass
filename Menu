@@ -1,0 +1,200 @@
+local MessageBox = loadstring(game:HttpGet("https://raw.githubusercontent.com/bitsplode/ScyllaBypass/main/Messages"))()
+local system = {}
+
+function system.menu()
+	local BypassScyllaMenu = Instance.new("ScreenGui")
+	local Main = Instance.new("Frame")
+	local Line2 = Instance.new("TextLabel")
+	local Line1 = Instance.new("TextLabel")
+	local Games = Instance.new("ScrollingFrame")
+	local Changelog = Instance.new("TextLabel")
+	local Load = Instance.new("TextButton")
+	local Exit = Instance.new("TextButton")
+	local Logo = Instance.new("TextLabel")
+	local Status = Instance.new("TextLabel")
+	local GameLayout = Instance.new("UIListLayout")
+
+	local selectedGame = {
+		SGame = nil;
+		GameScript = nil;
+		GameID = nil;
+		Status = nil;
+	}
+
+	syn.protect_gui(BypassScyllaMenu)
+	BypassScyllaMenu.Name = syn.crypt.hash("BypassScyllaMenu")
+	BypassScyllaMenu.Parent = game.CoreGui
+
+	Main.Name = "Main"
+	Main.Parent = BypassScyllaMenu
+	Main.BackgroundColor3 = Color3.fromRGB(36, 36, 36)
+	Main.AnchorPoint = Vector2.new(.5, .5)
+	Main.Position = UDim2.new(0.5, 0, 0.5, 0)
+	Main.Size = UDim2.new(0, 709, 0, 501)
+
+	Line2.Name = "Line2"
+	Line2.Parent = Main
+	Line2.BackgroundColor3 = Color3.fromRGB(193, 193, 193)
+	Line2.BorderSizePixel = 0
+	Line2.Position = UDim2.new(0.983022571, 0, 0.0229487009, 0)
+	Line2.Size = UDim2.new(0, 3, 0, 115)
+	Line2.Font = Enum.Font.SourceSans
+	Line2.Text = ""
+	Line2.TextColor3 = Color3.fromRGB(0, 0, 0)
+	Line2.TextSize = 14.000
+
+	Line1.Name = "Line1"
+	Line1.Parent = Main
+	Line1.BackgroundColor3 = Color3.fromRGB(193, 193, 193)
+	Line1.BorderSizePixel = 0
+	Line1.Position = UDim2.new(0.0128438976, 0, 0.0229487009, 0)
+	Line1.Size = UDim2.new(0, 3, 0, 115)
+	Line1.Font = Enum.Font.SourceSans
+	Line1.Text = ""
+	Line1.TextColor3 = Color3.fromRGB(0, 0, 0)
+	Line1.TextSize = 14.000
+
+	Games.Name = "Games"
+	Games.Parent = Main
+	Games.Active = true
+	Games.BackgroundColor3 = Color3.fromRGB(36, 36, 36)
+	Games.BorderColor3 = Color3.fromRGB(255, 255, 255)
+	Games.Position = UDim2.new(0.0126939351, 0, 0.453093827, 0)
+	Games.Size = UDim2.new(0, 250, 0, 218)
+	Games.CanvasSize = UDim2.new(0, 0, 0.200000003, 0)
+	Games.ScrollBarThickness = 6
+
+	Changelog.Name = "Changelog"
+	Changelog.Parent = Main
+	Changelog.BackgroundColor3 = Color3.fromRGB(36, 36, 36)
+	Changelog.BorderColor3 = Color3.fromRGB(255, 255, 255)
+	Changelog.Position = UDim2.new(0.376586735, 0, 0.453093827, 0)
+	Changelog.Size = UDim2.new(0, 432, 0, 218)
+	Changelog.Font = Enum.Font.SourceSansBold
+	Changelog.Text = ""--"Status: Updating\\n\\n4/8/2023:\\n- [Added] Safe mode!\\n- [Removed] Mid mode!\\n- [Fixed] The hub!"
+	Changelog.TextColor3 = Color3.fromRGB(255, 255, 255)
+	Changelog.TextSize = 14.000
+	Changelog.TextXAlignment = Enum.TextXAlignment.Left
+	Changelog.TextYAlignment = Enum.TextYAlignment.Top
+
+	Exit.Name = "Exit"
+	Exit.Parent = Main
+	Exit.BackgroundColor3 = Color3.fromRGB(85, 85, 85)
+	Exit.BorderColor3 = Color3.fromRGB(255, 255, 255)
+	Exit.Position = UDim2.new(0.394922435, 0, 0.349301338, 0)
+	Exit.Size = UDim2.new(0, 150, 0, 25)
+	Exit.Font = Enum.Font.SourceSans
+	Exit.Text = "Exit"
+	Exit.TextColor3 = Color3.fromRGB(255, 255, 255)
+	Exit.TextSize = 18.000
+
+	Logo.Name = "Logo"
+	Logo.Parent = Main
+	Logo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Logo.BackgroundTransparency = 1.000
+	Logo.Position = UDim2.new(0.0310296193, 0, 0.021956088, 0)
+	Logo.Size = UDim2.new(0, 666, 0, 115)
+	Logo.Font = Enum.Font.SourceSansBold
+	Logo.Text = "YOUR NAME HERE"
+	Logo.TextColor3 = Color3.fromRGB(255, 255, 255)
+	Logo.TextScaled = true
+	Logo.TextSize = 18.000
+	Logo.TextWrapped = true
+
+	Status.Name = "Status"
+	Status.Parent = Main
+	Status.BackgroundColor3 = Color3.fromRGB(85, 85, 85)
+	Status.BorderColor3 = Color3.fromRGB(255, 255, 255)
+	Status.Position = UDim2.new(0.376586735, 0, 0.900199592, 0)
+	Status.Size = UDim2.new(0, 432, 0, 25)
+	Status.Font = Enum.Font.SourceSans
+	Status.TextColor3 = Color3.fromRGB(255, 255, 255)
+	Status.TextSize = 18.000
+	Status.Text = ""
+	Status.Visible = false
+	Status.TextXAlignment = Enum.TextXAlignment.Left
+
+	Load.Name = "Load"
+	Load.Parent = Main
+	Load.BackgroundColor3 = Color3.fromRGB(85, 85, 85)
+	Load.BorderColor3 = Color3.fromRGB(255, 255, 255)
+	Load.Position = UDim2.new(0.0126939351, 0, 0.902195573, 0)
+	Load.Size = UDim2.new(0, 250, 0, 25)
+	Load.Font = Enum.Font.SourceSans
+	Load.Text = "Load"
+	Load.TextColor3 = Color3.fromRGB(255, 255, 255)
+	Load.TextSize = 18.000
+	Load.MouseButton1Click:Connect(function()
+		if selectedGame and selectedGame.SGame then
+			if selectedGame.Status == "Undetected" then
+				syn.queue_on_teleport(selectedGame.GameScript)
+				Status.Visible = true
+				Status.Text = "Preparing Software..."
+				wait(1)
+				MessageBox.Show({Position = UDim2.new(0.5,0,0.5,0), Text = "Success", Description = "Press OK to launch the game.", MessageBoxIcon = "Question", MessageBoxButtons = "OK", Result = function(res)
+					game:GetService("TeleportService"):Teleport(selectedGame.GameID, game.Players.LocalPlayer)
+				end})
+			else
+				MessageBox.Show({Position = UDim2.new(0.5,0,0.5,0), Text = "Failed to load software", Description = "The software you are trying to load is currently being updated. \n \n Please check back later.", MessageBoxIcon = "Error", MessageBoxButtons = "OK", Result = function(res)
+
+				end})
+			end
+		else
+			Status.Visible = true
+			Status.Text = "You have no game selected"
+		end
+	end)
+
+	GameLayout.Name = "TabLayout"
+	GameLayout.Parent = Games
+	GameLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+	GameLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+	return {
+		add = function(name, ID, icon, status, changelog, cheat)
+			local GameTemplate = Instance.new("Frame")
+			local GameIcon = Instance.new("ImageLabel")
+			local GameButton = Instance.new("TextButton")
+
+			GameTemplate.Name = "GameTemplate"
+			GameTemplate.Parent = Games
+			GameTemplate.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			GameTemplate.BackgroundTransparency = 1.000
+			GameTemplate.Position = UDim2.new(-0.0033061523, 0, -0.00103451789, 0)
+			GameTemplate.Size = UDim2.new(0, 250, 0, 30)
+
+			GameIcon.Name = "GameIcon"
+			GameIcon.Parent = GameTemplate
+			GameIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			GameIcon.BackgroundTransparency = 1.000
+			GameIcon.Position = UDim2.new(0.0120000001, 0, 0, 0)
+			GameIcon.Size = UDim2.new(0, 30, 0, 30)
+			GameIcon.Image = "rbxassetid://"..icon
+
+			GameButton.Name = "GameButton"
+			GameButton.Parent = GameTemplate
+			GameButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			GameButton.BackgroundTransparency = 1.000
+			GameButton.Position = UDim2.new(0.159999996, 0, 0, 0)
+			GameButton.Size = UDim2.new(0, 210, 0, 30)
+			GameButton.Font = Enum.Font.SourceSansBold
+			GameButton.Text = name
+			GameButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+			GameButton.TextSize = 18.000
+			GameButton.TextXAlignment = Enum.TextXAlignment.Left
+			GameButton.MouseButton1Click:Connect(function()
+				selectedGame.SGame = name
+				selectedGame.GameID = ID
+				selectedGame.GameScript = cheat
+				selectedGame.Status = status
+
+				Changelog.Text = [[Status: ]]..status..[[
+				
+				
+				]]..changelog
+			end)
+		end,
+	}
+end
+
+return system
