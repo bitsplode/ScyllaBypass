@@ -1,3 +1,9 @@
+while wait() do
+	if game:IsLoaded() then
+		break
+	end
+end
+
 local hashing = loadstring(game:HttpGet("https://raw.githubusercontent.com/bitsplode/Valkyrie/main/HashLib"))()
 local UIS = game:GetService("UserInputService")
 local httpService = game:GetService("HttpService")
@@ -17,7 +23,7 @@ end
 
 function system.window(name)
 	player:GetMouse().Icon = "rbxassetid://6776562421"
-	
+
 	for i, v in pairs(getgenv()) do
 		if typeof(v) == "table" then
 			if v.Data and v.UI then
@@ -48,7 +54,7 @@ function system.window(name)
 	getgenv()[fingerprint].UI = BypassScylla
 
 	local navigating = false;
-	
+
 	syn.protect_gui(BypassScylla)
 	BypassScylla.Name = syn.crypt.hash("BypassScyllaMenu")
 	BypassScylla.Parent = game.CoreGui
@@ -118,7 +124,7 @@ function system.window(name)
 				Main.Position = UDim2.new(Main.Position.X.Scale + .01, Main.Position.X.Offset, Main.Position.Y.Scale, Main.Position.Y.Offset)
 			end
 		end
-		
+
 		if not gpe and key.KeyCode == Enum.KeyCode.End then
 			BypassScylla.Enabled = not BypassScylla.Enabled
 			navigating = false
