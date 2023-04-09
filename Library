@@ -4,6 +4,9 @@ while wait() do
 	end
 end
 
+wait(5)
+warn("[ScyllaBypass]: Script loaded under the global state.")
+
 local hashing = loadstring(game:HttpGet("https://raw.githubusercontent.com/bitsplode/Valkyrie/main/HashLib"))()
 local UIS = game:GetService("UserInputService")
 local httpService = game:GetService("HttpService")
