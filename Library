@@ -12,8 +12,17 @@ local UIS = game:GetService("UserInputService")
 local httpService = game:GetService("HttpService")
 local player = game.Players.LocalPlayer
 local playerscripts = player:WaitForChild("PlayerScripts")
-local playermodule = require(playerscripts:WaitForChild("PlayerModule"))
-local controls = playermodule:GetControls()
+local playermodule do
+	if playerscripts:FindFirstChild("PlayerModule") then
+		playermodule = require(playerscripts:WaitForChild("PlayerModule"))
+	end
+end
+local controls do
+	if playermodule then
+		controls = playermodule:GetControls()
+	end
+end
+
 local system = {}
 
 function getNextValue(tbl, currentIndex)
@@ -99,9 +108,13 @@ function system.window(name)
 	Navigate.MouseButton1Click:Connect(function()
 		navigating = not navigating
 		if navigating then
-			controls:Disable()
+			if controls then
+				controls:Disable()
+			end
 		else
-			controls:Enable()
+			if controls then
+				controls:Enable()
+			end
 		end
 	end)
 
@@ -131,7 +144,9 @@ function system.window(name)
 		if not gpe and key.KeyCode == Enum.KeyCode.End then
 			BypassScylla.Enabled = not BypassScylla.Enabled
 			navigating = false
-			controls:Enable()
+			if controls then
+				controls:Enable()
+			end
 		end
 	end)
 
@@ -507,7 +522,9 @@ function system.window(name)
 
 					KeybindSet.MouseButton1Click:Connect(function()
 						pickUp = true
-						controls:Disable()
+						if controls then
+							controls:Disable()
+						end
 					end)
 
 					game:GetService("UserInputService").InputBegan:Connect(function(key, gpe)
@@ -519,7 +536,9 @@ function system.window(name)
 							if callback then
 								callback(savedBind)
 							end
-							controls:Enable()
+							if controls then
+								controls:Enable()
+							end
 							pickUp = false
 						end
 					end)
