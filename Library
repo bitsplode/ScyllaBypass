@@ -33,12 +33,22 @@ function getNextValue(tbl, currentIndex)
 	end
 end
 
+function getExchangeValues(value)
+	if value == "Off" then
+		return false
+	elseif value == "On" then
+		return true
+	else
+		return value
+	end
+end
+
 function system.window(name)
 	player:GetMouse().Icon = "rbxassetid://6776562421"
 
 	for i, v in pairs(getgenv()) do
 		if typeof(v) == "table" then
-			if v.Data and v.UI then
+			if v.Env and v.UI then
 				v.UI:Destroy()
 				v = nil;
 			end
@@ -49,8 +59,8 @@ function system.window(name)
 	getgenv().ScyllaBypass = true
 	getgenv()[fingerprint] = {
 		CreationDate = tick(),
-		Data = {
-
+		Env = {
+			
 		},
 	}
 
@@ -177,12 +187,12 @@ function system.window(name)
 	Containers.Position = UDim2.new(0, 0, 0.0464926586, 0)
 	Containers.Size = UDim2.new(0, 582, 0, 584)
 	return {
-		tab = function(name)
+		tab = function(tabname)
 			local Tab = Instance.new("Frame")
 			local TabLayout = Instance.new("UIListLayout")
 			local OptionTemplate = Instance.new("TextButton")
 
-			Tab.Name = name
+			Tab.Name = tabname
 			Tab.Parent = Containers
 			Tab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 			Tab.BackgroundTransparency = 1.000
@@ -196,7 +206,7 @@ function system.window(name)
 			TabLayout.SortOrder = Enum.SortOrder.LayoutOrder
 
 			OptionTemplate.Name = "OptionTemplate"
-			OptionTemplate.Text = name
+			OptionTemplate.Text = tabname
 			OptionTemplate.Parent = Options
 			OptionTemplate.BackgroundColor3 = Color3.fromRGB(64, 64, 64)
 			OptionTemplate.BorderColor3 = Color3.fromRGB(40, 40, 40)
@@ -220,8 +230,16 @@ function system.window(name)
 				OptionTemplate.BackgroundColor3 = Color3.fromRGB(49, 49, 49)
 				Tab.Visible = true
 			end)
+			
+			getgenv()[fingerprint].Env[tabname] = {}
 
 			return {
+				getEnv = function(envName)
+					return getgenv()[fingerprint].Env[tabname][envName]
+				end,
+				setEnv = function(envName, value)
+					getgenv()[fingerprint].Env[tabname][envName] = value
+				end,
 				toggle = function(name, default, dictionary, callback)
 					local ToggleTemplate = Instance.new("Frame")
 					local ToggleTitle = Instance.new("TextLabel")
@@ -301,11 +319,12 @@ function system.window(name)
 						packetAmount = packetAmount - 1
 						if dictionary[packetAmount] then
 							ToggleStatus.Text = dictionary[packetAmount]
+							getgenv()[fingerprint].Env[tabname][name] = getExchangeValues(dictionary[packetAmount])
 							callback(dictionary[packetAmount])
 						else
 							packetAmount = #dictionary
 							ToggleStatus.Text = dictionary[packetAmount]
-							callback(dictionary[packetAmount])
+							getgenv()[fingerprint].Env[tabname][name] = getExchangeValues(dictionary[packetAmount])
 						end
 					end)
 
@@ -313,12 +332,14 @@ function system.window(name)
 						packetAmount = packetAmount + 1
 						if dictionary[packetAmount] then
 							ToggleStatus.Text = dictionary[packetAmount]
+							getgenv()[fingerprint].Env[tabname][name] = getExchangeValues(dictionary[packetAmount])
+							callback(dictionary[packetAmount])
 						else
 							packetAmount = 1
 							ToggleStatus.Text = dictionary[packetAmount]
-							callback(dictionary[packetAmount])
 						end
 					end)
+					getgenv()[fingerprint].Env[tabname][name] = getExchangeValues(default)
 				end,
 				slider = function(name, default, range, callback)
 					local SliderTemplate = Instance.new("Frame")
@@ -429,12 +450,14 @@ function system.window(name)
 								local percentage = math.clamp(relPos.X/SliderStatus.AbsoluteSize.X,0,1)
 								SliderDragable.Position = UDim2.new(percentage, 0, -1, 0)
 								if callback then
+									getgenv()[fingerprint].Env[tabname][name] = percentage*range[2]
 									callback(percentage*range[2])
 								end
 								--Status_2.Text = roundNumber(percentage*max, 1)
 							end
 						end
 					end)
+					getgenv()[fingerprint].Env[tabname][name] = default
 				end,
 				keybind = function(name, default, inputType, callback)
 					local KeybindTemplate = Instance.new("Frame")
@@ -530,6 +553,7 @@ function system.window(name)
 					game:GetService("UserInputService").InputBegan:Connect(function(key, gpe)
 						if pickUp == true then
 							savedBind = key.KeyCode
+							getgenv()[fingerprint].Env[tabname][name] = savedBind
 							if savedBind then
 								KeybindStatus.Text = savedBind.Name
 							end
@@ -545,9 +569,12 @@ function system.window(name)
 
 					KeybindUnset.MouseButton1Click:Connect(function()
 						KeybindStatus.Text = "NONE"
+						getgenv()[fingerprint].Env[tabname][name] = "NONE"
 						savedBind = nil;
 						pickUp = false
 					end)
+					
+					getgenv()[fingerprint].Env[tabname][name] = default
 				end,
 			}
 		end,
