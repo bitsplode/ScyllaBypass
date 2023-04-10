@@ -325,6 +325,7 @@ function system.window(name)
 							packetAmount = #dictionary
 							ToggleStatus.Text = dictionary[packetAmount]
 							getgenv()[fingerprint].Env[tabname][name] = getExchangeValues(dictionary[packetAmount])
+							callback(dictionary[packetAmount])
 						end
 					end)
 
@@ -337,6 +338,7 @@ function system.window(name)
 						else
 							packetAmount = 1
 							ToggleStatus.Text = dictionary[packetAmount]
+							callback(dictionary[packetAmount])
 						end
 					end)
 					getgenv()[fingerprint].Env[tabname][name] = getExchangeValues(default)
