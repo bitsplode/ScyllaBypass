@@ -19,6 +19,8 @@ function system.menu()
 		GameScript = nil;
 		GameID = nil;
 		Status = nil;
+		Teleport = nil;
+		JustQueue = nil;
 	}
 
 	syn.protect_gui(BypassScyllaMenu)
@@ -95,7 +97,7 @@ function system.menu()
 	Logo.Position = UDim2.new(0.0310296193, 0, 0.021956088, 0)
 	Logo.Size = UDim2.new(0, 666, 0, 115)
 	Logo.Font = Enum.Font.SourceSansBold
-	Logo.Text = "YOUR NAME HERE"
+	Logo.Text = "SCYLLA BYPASS"
 	Logo.TextColor3 = Color3.fromRGB(255, 255, 255)
 	Logo.TextScaled = true
 	Logo.TextSize = 18.000
@@ -126,14 +128,25 @@ function system.menu()
 	Load.TextSize = 18.000
 	Load.MouseButton1Click:Connect(function()
 		if selectedGame and selectedGame.SGame then
-			if selectedGame.Status == "Undetected" then
-				syn.queue_on_teleport(selectedGame.GameScript)
-				Status.Visible = true
-				Status.Text = "Preparing Software..."
-				wait(1)
-				MessageBox.Show({Position = UDim2.new(0.5,0,0.5,0), Text = "Success", Description = "Press OK to launch the game.", MessageBoxIcon = "Question", MessageBoxButtons = "OK", Result = function(res)
-					game:GetService("TeleportService"):Teleport(selectedGame.GameID, game.Players.LocalPlayer)
-				end})
+			if selectedGame.Status == "Undetected" or selectedGame.Status == "Unknown" then
+				if selectedGame.JustQueue == true then
+					syn.queue_on_teleport(selectedGame.GameScript)
+				else
+					if selectedGame.Teleport == true then
+						syn.queue_on_teleport(selectedGame.GameScript)
+						Status.Visible = true
+						Status.Text = "Preparing Software..."
+						wait(selectedGame.LoadingTime)
+						MessageBox.Show({Position = UDim2.new(0.5,0,0.5,0), Text = "Success", Description = "Press OK to launch the game.", MessageBoxIcon = "Question", MessageBoxButtons = "OK", Result = function(res)
+							game:GetService("TeleportService"):Teleport(selectedGame.GameID, game.Players.LocalPlayer)
+						end})
+					else
+						Status.Visible = true
+						Status.Text = "Preparing Software..."
+						wait(selectedGame.LoadingTime)
+						loadstring(selectedGame.GameScript)()
+					end
+				end
 			else
 				MessageBox.Show({Position = UDim2.new(0.5,0,0.5,0), Text = "Failed to load software", Description = "The software you are trying to load is currently being updated. \n \n Please check back later.", MessageBoxIcon = "Error", MessageBoxButtons = "OK", Result = function(res)
 
@@ -151,15 +164,28 @@ function system.menu()
 	GameLayout.SortOrder = Enum.SortOrder.LayoutOrder
 
 	return {
-		add = function(name, ID, icon, status, changelog, cheat)
+		add = function(packet) --name, ID, icon, status, changelog, cheat
+			if packet.Private then
+				if game.Players.LocalPlayer.UserId ~= 3277365780 then
+					return "Exploit is private, player does not have permission"
+				end
+			end
+
 			local GameTemplate = Instance.new("Frame")
 			local GameIcon = Instance.new("ImageLabel")
 			local GameButton = Instance.new("TextButton")
 
 			GameTemplate.Name = "GameTemplate"
 			GameTemplate.Parent = Games
-			GameTemplate.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			GameTemplate.BackgroundTransparency = 1.000
+
+			if packet.Status == "Undetected" then
+				GameTemplate.BackgroundColor3 = Color3.fromRGB(85, 255, 0)
+			elseif packet.Status == "Unknown" then
+				GameTemplate.BackgroundColor3 = Color3.fromRGB(255, 85, 0)
+			else
+				GameTemplate.BackgroundColor3 = Color3.fromRGB(104, 104, 104)
+			end
+			GameTemplate.BackgroundTransparency = .4
 			GameTemplate.Position = UDim2.new(-0.0033061523, 0, -0.00103451789, 0)
 			GameTemplate.Size = UDim2.new(0, 250, 0, 30)
 
@@ -169,7 +195,7 @@ function system.menu()
 			GameIcon.BackgroundTransparency = 1.000
 			GameIcon.Position = UDim2.new(0.0120000001, 0, 0, 0)
 			GameIcon.Size = UDim2.new(0, 30, 0, 30)
-			GameIcon.Image = "rbxassetid://"..icon
+			GameIcon.Image = "rbxassetid://"..packet.Icon
 
 			GameButton.Name = "GameButton"
 			GameButton.Parent = GameTemplate
@@ -178,20 +204,35 @@ function system.menu()
 			GameButton.Position = UDim2.new(0.159999996, 0, 0, 0)
 			GameButton.Size = UDim2.new(0, 210, 0, 30)
 			GameButton.Font = Enum.Font.SourceSansBold
-			GameButton.Text = name
+			GameButton.Text = packet.Name
 			GameButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 			GameButton.TextSize = 18.000
 			GameButton.TextXAlignment = Enum.TextXAlignment.Left
 			GameButton.MouseButton1Click:Connect(function()
-				selectedGame.SGame = name
-				selectedGame.GameID = ID
-				selectedGame.GameScript = cheat
-				selectedGame.Status = status
+				selectedGame.SGame = packet.Name
+				selectedGame.GameID = packet.ID
+				selectedGame.GameScript = packet.Source
+				selectedGame.Status = packet.Status
+				selectedGame.Teleport = packet.Teleport
+				selectedGame.JustQueue = packet.JustQueue
+				selectedGame.LoadingTime = packet.LoadingDelay
 
-				Changelog.Text = [[Status: ]]..status..[[
+				Changelog.Text = [[Status: ]]..packet.Status..[[
 				
 				
-				]]..changelog
+				]]..packet.Changelog
+
+				--[[
+				packet.Name
+				packet.Status
+				packet.Changelog
+				packet.Icon
+				packet.ID
+				packet.Teleport
+				packet.Source
+				packet.Private
+				]]
+
 			end)
 		end,
 	}
