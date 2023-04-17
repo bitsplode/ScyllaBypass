@@ -1,7 +1,51 @@
+local function count()
+	local Count = 0
+	for i,v in next, getreg() do
+		if typeof(v) == 'function' and is_synapse_function(v) and typeof(i) == 'string' and i:len() == 16 then
+			Count = Count+ 1
+		end
+	end
+	return Count
+end
+if count() == 28 then
+	warn("nothing was executed before")
+else
+	game.Players.LocalPlayer:Kick("Please refrain from executing anything before using Engine4Cheating")
+	while true do while true do while true do while true do while true do while true do while true do while true do while true do end end end end end end end end end
+	return
+end
+
+local function getexploit()
+	local exploit =
+		(syn and not is_sirhurt_closure and not pebc_execute and "Synapse") or
+		(secure_load and "Sentinel") or
+		(is_sirhurt_closure and "Sirhurt") or
+		(pebc_execute and "ProtoSmasher") or
+		(KRNL_LOADED and "Krnl") or
+		(WrapGlobal and "WeAreDevs") or
+		(isvm and "Proxo") or
+		(shadow_env and "Shadow") or
+		(jit and "EasyExploits") or
+		(getscriptenvs and "Calamari") or
+		(unit and not syn and "Unit") or
+		(OXYGEN_LOADED and "Oxygen U") or
+		(IsElectron and "Electron") or
+		("Unsupported")
+
+	return exploit
+end
+
+local MessageBox = loadstring(game:HttpGet("https://raw.githubusercontent.com/bitsplode/ScyllaBypass/main/Messages"))()
 local encryption = loadstring(game:HttpGet("https://raw.githubusercontent.com/bitsplode/Valkyrie/main/encryption.lua"))()
 local hash = loadstring(game:HttpGet("https://raw.githubusercontent.com/bitsplode/Valkyrie/main/HashLib"))()
 
 local httpService = game:GetService("HttpService")
+
+if getexploit() ~= "Synapse" then
+	game.Players.LocalPlayer:Kick("Unsupported exploit, Engine4Cheating is for Synapse X V2/V3 only!")
+	while true do while true do while true do while true do while true do while true do while true do while true do while true do end end end end end end end end end
+	return
+end
 
 local function getHWID()
 	local http_request = syn.request;
@@ -35,7 +79,9 @@ if getgenv().key == hash.sha256(getContents) then
 		if dec then
 			dec = httpService:JSONDecode(dec);
 			if dec.Timestamp + (86400 * 3) > tick() and dec.HWID == saveHWID then
-				loadstring(game:HttpGet("https://raw.githubusercontent.com/bitsplode/ScyllaBypass/main/MainScript"))()
+				MessageBox.Show({Position = UDim2.new(0.5,0,0.5,0), Text = "Expiry Date", Description = "Key expiry date: ".. os.date("%x", dec.Timestamp + (86400 * 3)) .. " " .. os.date("%X", dec.Timestamp + (86400 * 3)), MessageBoxIcon = "Question", MessageBoxButtons = "OK", Result = function(res)
+					loadstring(game:HttpGet("https://raw.githubusercontent.com/bitsplode/ScyllaBypass/main/MainScript"))()
+				end})
 			elseif dec.Timestamp + (86400 * 3) < tick() then
 				warn("Time on key expired")
 			elseif dec.HWID ~= saveHWID then
