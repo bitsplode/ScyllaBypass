@@ -4,7 +4,12 @@ local hash = loadstring(game:HttpGet("https://raw.githubusercontent.com/bitsplod
 local httpService = game:GetService("HttpService")
 
 local function getHWID()
-	return httpService:JSONDecode(syn.request({Url = 'https://httpbin.org/get'; Method = 'GET'}).Body).headers["Syn-Fingerprint"]
+	local http_request = syn.request;
+	-- IP Would go like game:HttpGet("http://api.ipify.org")
+	local body = http_request({Url = 'https://httpbin.org/get'; Method = 'GET'}).Body;
+	local decoded = httpService:JSONDecode(body)
+	local hwid = decoded.headers["Syn-Fingerprint"]
+	return hwid
 end
 
 local function Write(name, data)
@@ -30,7 +35,7 @@ if getgenv().key == hash.sha256(getContents) then
 		if dec then
 			dec = httpService:JSONDecode(dec);
 			if dec.Timestamp + (86400 * 3) > tick() and dec.HWID == saveHWID then
-				loadstring(game:HttpGet("https://raw.githubusercontent.com/bitsplode/ScyllaBypass/main/MainScript"))
+				loadstring(game:HttpGet("https://raw.githubusercontent.com/bitsplode/ScyllaBypass/main/MainScript"))()
 			elseif dec.Timestamp + (86400 * 3) < tick() then
 				warn("Time on key expired")
 			elseif dec.HWID ~= saveHWID then
