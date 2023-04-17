@@ -1,0 +1,45 @@
+local encryption = loadstring(game:HttpGet("https://raw.githubusercontent.com/bitsplode/Valkyrie/main/encryption.lua"))()
+local hash = loadstring(game:HttpGet("https://raw.githubusercontent.com/bitsplode/Valkyrie/main/HashLib"))()
+
+local httpService = game:GetService("HttpService")
+
+local function getHWID()
+	return httpService:JSONDecode(syn.request({Url = 'https://httpbin.org/get'; Method = 'GET'}).Body).headers["Syn-Fingerprint"]
+end
+
+local function Write(name, data)
+	writefile(name..'.json', data)
+end
+
+local function Load(name)
+	if isfile(name..'.json') then
+		return readfile(name..'.json')
+	end
+end
+
+local getContents = Load("Engine4Cheating")
+if getgenv().key == hash.sha256(getContents) then
+	local saveHWID = getHWID()
+
+	local dec;
+	local s, e = pcall(function()
+		dec = encryption.decrypt("3545cefe42af9e4f538f716987a4f82b3ceb0f70da1a02c557f67ba2ec52474a", getContents, 32, 4)
+	end)
+
+	if s then
+		if dec then
+			dec = httpService:JSONDecode(dec);
+			if dec.Timestamp + (86400 * 3) > tick() and dec.HWID == saveHWID then
+				loadstring(game:HttpGet("https://raw.githubusercontent.com/bitsplode/ScyllaBypass/main/MainScript"))
+			elseif dec.Timestamp + (86400 * 3) < tick() then
+				warn("Time on key expired")
+			elseif dec.HWID ~= saveHWID then
+				warn("Invalid Hardware ID")
+			end
+		end
+	else
+		warn("Error", e)
+	end
+else
+	warn("Invalid key")
+end
