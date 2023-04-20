@@ -106,4 +106,4 @@ else
 	log("Teleporting back... please wait.", nil, "Note")
 end
 
-syn.queue_on_teleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/bitsplode/ScyllaBypass/main/SlaughterAutofarm'))()")
+syn.queue_on_teleport("game:HttpGet('https://raw.githubusercontent.com/bitsplode/ScyllaBypass/main/SlaughterAutofarm')")
