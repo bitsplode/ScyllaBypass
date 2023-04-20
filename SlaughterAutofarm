@@ -56,7 +56,7 @@ else
 			game.ReplicatedStorage.Remotes.Stun:FireServer()
 		end
 	end)
-	
+
 	stundastupid()
 
 	repeat
@@ -92,7 +92,7 @@ else
 		log("Current Tinder Crossing Status: "..check.Tinder_P.Count.Text, "WHITE", "Warn")
 		wait(#crosses:GetChildren()/7.3)
 	until (check.Gas_P.Count.Text == "5/5" or check.Gas_P.Count.Text == "6/6" or check.Gas_P.Count.Text == "7/7" or check.Gas_P.Count.Text == "8/8" or check.Gas_P.Count.Text == "9/9") and (check.Tinder_P.Count.Text == "5/5" or check.Tinder_P.Count.Text == "6/6" or check.Tinder_P.Count.Text == "7/7" or check.Tinder_P.Count.Text == "8/8" or check.Tinder_P.Count.Text == "9/9")
-	
+
 	log("Switching lever...", nil, "Note")
 	repeat
 		local v = game:GetService("Workspace").Switch.Base
@@ -102,8 +102,8 @@ else
 		Target:FireServer();
 		wait(.1)
 	until not char
-	
+
 	log("Teleporting back... please wait.", nil, "Note")
 end
 
-syn.queue_on_teleport("print(works)")
+syn.queue_on_teleport('loadstring("https://raw.githubusercontent.com/bitsplode/ScyllaBypass/main/SlaughterAutofarm")()')
