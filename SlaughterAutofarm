@@ -1,4 +1,7 @@
 wait(2)
+
+syn.queue_on_teleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/bitsplode/ScyllaBypass/main/SlaughterAutofarm'))()")
+
 repeat wait()
 until game.Players.LocalPlayer and game.Players.LocalPlayer.Character
 local plr = game.Players.LocalPlayer
@@ -105,5 +108,3 @@ else
 
 	log("Teleporting back... please wait.", nil, "Note")
 end
-
-syn.queue_on_teleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/bitsplode/ScyllaBypass/main/SlaughterAutofarm'))()")
